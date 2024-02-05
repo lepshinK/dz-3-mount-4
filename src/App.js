@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const TodoApp = () => {
+    const tasksRef = React.useRef([]);
+    const newTaskRef = React.useRef('');
 
-export default App;
+    const forceUpdate = () => {};
+
+    const handleAddTask = () => {
+        const newTask = newTaskRef.current.trim();
+        if (newTask !== '') {
+            tasksRef.current = [...tasksRef.current, newTask];
+            newTaskRef.current = '';
+            forceUpdate(); // Принудительное обновление компонента
+        }
+    };
+
+    return (
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <h2>Список задач</h2>
+            <ul>
+                {tasksRef.current.map((task, index) => (
+                    <li key={index}>{task}</li>
+                ))}
+            </ul>
+            <div>
+                <input
+                    type="text"
+                    value={newTaskRef.current}
+                    onChange={(e) => (newTaskRef.current = e.target.value)}
+                    placeholder="Введите новую задачу"
+                />
+                <button onClick={handleAddTask}>Добавить задачу</button>
+            </div>
+        </div>
+    );
+};
+
+export default TodoApp;
